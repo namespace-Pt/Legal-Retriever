@@ -1,0 +1,21 @@
+{
+    "model_path": "/data/peitian/Data/hf-models/bge-m3",
+    "model_kwargs": {
+        "attn_implementation": "eager",
+        "torch_dtype": "float16",
+        "device_map": {
+            "": "cuda"
+        }
+    },
+    "tokenizer_kwargs": {
+        "padding_side": "right"
+    },
+    "pooling_method": "first",
+    "normalize": true,
+    "mrl_dims": null,
+    "mrl_2layer_proj": null,
+    "query_max_length": 512,
+    "key_max_length": 512,
+    "query_template": "no",
+    "key_template": "no"
+}
