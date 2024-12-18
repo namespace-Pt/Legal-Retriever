@@ -1,0 +1,5 @@
+curl -X POST -H "Content-Type: application/json" -H "Accept: application/json" -d '{"query": "反垄断", "index_name": "test", "topk": 1}' http://127.0.0.1:8000/search/ | jq &
+curl -X POST -H "Content-Type: application/json" -H "Accept: application/json" -d '{"query": "外贸", "index_name": "test", "topk": 1}' http://127.0.0.1:8000/search/ | jq &
+curl -X POST -H "Content-Type: application/json" -H "Accept: application/json" -d '{"query": "个人所得税", "index_name": "test", "topk": 1}' http://127.0.0.1:8000/search/ | jq &
+curl -X POST -H "Content-Type: application/json" -H "Accept: application/json" -d '{"query": "测试", "index_name": "test", "topk": 1}' http://127.0.0.1:8000/search/ | jq &
+curl -X POST -H "Content-Type: application/json" -H "Accept: application/json" -d '{"query": "啥玩意", "index_name": "test", "topk": 1}' http://127.0.0.1:8000/search/ | jq &
