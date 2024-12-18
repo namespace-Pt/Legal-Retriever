@@ -25,6 +25,10 @@ logger.info("Starting API...")
 app = FastAPI()
 
 
+class SetModelRequest(BaseModel):
+    model_name: str = "bge-m3"
+
+
 class IndexRequest(BaseModel):
     index_name: str = "tmp"
     texts: List[str] = []
@@ -36,13 +40,23 @@ class SearchRequest(BaseModel):
     topk: int = 10
 
 
-@app.get("/set-model/{model_name}")
-def set_model(model_name: str):
+class RemoveIndexRequest(BaseModel):
+    index_name: str = "tmp"
+
+
+def index_exists(index_name):
+    return elasticsearch.indices.exists(index=index_name).body
+
+
+@app.post("/set-model")
+def set_model(req: SetModelRequest):
     global model
     if model is not None:
         del model
         torch.cuda.empty_cache()
         gc.collect()
+
+    model_name = req.model_name
     with open(f"config/{model_name}.json", encoding="utf-8") as f:
         model_config = json.load(f)
     model = EmbeddingModel(**model_config)
@@ -56,8 +70,7 @@ async def index(req: IndexRequest):
     index_name = req.index_name
     
     ###### 1. create index if it does not exist
-    existence = elasticsearch.indices.exists(index=index_name).body
-    if not existence:
+    if not index_exists(index_name):
         elasticsearch.indices.create(
             index=index_name,
             settings={
@@ -118,6 +131,9 @@ async def search(req: SearchRequest):
     index_name = req.index_name
     topk = req.topk
     
+    if not index_exists(index_name):
+        return JSONResponse(f"Index {index_name} does not exist!", status_code=400)
+    
     resp = elasticsearch.search(
         index=index_name, 
         # ignore embedding in the returned source
@@ -152,9 +168,15 @@ async def search(req: SearchRequest):
     return JSONResponse(output)
 
 
-@app.get("/remove-index/{index_name}")
-def remove_index(index_name: str):
-    elasticsearch.indices.delete(index=index_name)
-    output = {"removed_index_name": index_name}
-    return JSONResponse(output)
+@app.post("/remove-index")
+def remove_index(req: RemoveIndexRequest):
+    index_name = req.index_name
+    existence = elasticsearch.indices.exists(index=index_name).body
+    if existence:
+        elasticsearch.indices.delete(index=index_name)
+        output = {"removed_index_name": index_name}
+        return JSONResponse(output)
+    else:
+        output = f"Index {index_name} does not exist!"
+        return JSONResponse(output, status_code=400)
 
