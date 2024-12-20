@@ -173,11 +173,8 @@ class Data:
         if "text" in data:
             text = key_template_fn(data["text"])
             outputs = {"text": text}
-        elif "content" in data:
-            text = key_template_fn(data["content"])
-            outputs = {"text": text}
         else:
-            raise ValueError(f"Expect 'text' field or 'content' field!")
+            raise ValueError(f"Expect 'text' field!")
         if "gid" in data:
             outputs["gid"] = data["gid"]
         return outputs
@@ -446,8 +443,10 @@ class Data:
             dataset = dataset.remove_columns(["hash"])
             # print(f"rank {torch.distributed.get_rank()} unique_indices {unique_indices[:10]} dataset {dataset[0]}")
 
-        if "text" in dataset.column_names or "content" in dataset.column_names:
+        if "text" in dataset.column_names:
             pass
+        elif "content" in dataset.column_names:
+            dataset = dataset.rename_column("content", "text")
         elif "doc_info" in dataset.column_names:
             # douyin dataset
             def text_format_fn(x):

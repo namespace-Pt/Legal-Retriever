@@ -667,7 +667,11 @@ class DenseRetriever(torch.nn.Module):
         if accelerator is not None:
             accelerator.wait_for_everyone()
 
+<<<<<<< HEAD
+        if isinstance(corpus, datasets.Dataset) and ("text" in corpus.column_names or "content" in corpus.column_names):
+=======
         if isinstance(corpus, datasets.Dataset) and "text" in corpus.column_names:
+>>>>>>> cb248046b6b6c650cd0d48d3076d95b11a8804eb
             pass
         elif isinstance(corpus, list) and isinstance(corpus[0], str):
             corpus = DummyCorpusDataset(corpus)
