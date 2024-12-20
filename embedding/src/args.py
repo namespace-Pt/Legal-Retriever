@@ -34,11 +34,7 @@ class BaseArgs:
     )
 
     model_name_or_path: str = field(
-<<<<<<< HEAD
         default="/data/peitian/Data/hf-models/bge-m3",
-=======
-        default="/mnt/bn/search-douyin-rank-yg/all_data_from_lf/llm_models/Qwen2-0.5B.with_fasttokenizer/",
->>>>>>> cb248046b6b6c650cd0d48d3076d95b11a8804eb
         metadata={'help': 'Path to pretrained model or model identifier from huggingface.co/models'}
     )
     access_token: Optional[str] = field(
@@ -46,11 +42,7 @@ class BaseArgs:
         metadata={'help': 'Huggingface access token.'}
     )
     attn_impl: Optional[str] = field(
-<<<<<<< HEAD
         default="eager",
-=======
-        default="flash_attention_2",
->>>>>>> cb248046b6b6c650cd0d48d3076d95b11a8804eb
         metadata={'help': 'The implementation of attention.'}
     )
     chat_template: str = field(
@@ -207,11 +199,7 @@ class DenseRetrievalArgs(BaseArgs):
         metadata={'help': 'Max key length.'}
     )
     pooling_method: str = field(
-<<<<<<< HEAD
         default="first",
-=======
-        default="last",
->>>>>>> cb248046b6b6c650cd0d48d3076d95b11a8804eb
         metadata={'help': 'Pooling methods to aggregate token embeddings for a sequence embedding. {first, last, mean}'}
     )
     normalize: bool = field(

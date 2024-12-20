@@ -16,7 +16,6 @@ from typing import Optional, Tuple, Union, List, Callable, Dict, Any, Mapping
 from dataclasses import dataclass
 from transformers.training_args import TrainingArguments
 from transformers.tokenization_utils import PreTrainedTokenizer
-from accelerate import Accelerator
 
 from .template import Templater
 from .utils import get_max_length_in_nested_lists, pad_nested_lists, split_file_dir_name_ext
